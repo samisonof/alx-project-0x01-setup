@@ -10,11 +10,12 @@ interface PostsPageProps {
 
 const Posts: React.FC<PostsPageProps> = ({ posts }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [newPosts, setNewPosts] = useState<PostProps[]>([]);
+  const [allPosts, setAllPosts] = useState<PostProps[]>(posts);
 
   const handleAddPost = (newPost: PostData) => {
-    const postWithId: PostProps = { ...newPost, id: posts.length + newPosts.length + 1 };
-    setNewPosts([postWithId, ...newPosts]);
+    const newId = allPosts.length + 1;
+    const postWithId: PostProps = { ...newPost, id: newId };
+    setAllPosts([postWithId, ...allPosts]);
   };
 
   return (
@@ -32,22 +33,25 @@ const Posts: React.FC<PostsPageProps> = ({ posts }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...newPosts, ...posts].map(({ title, body, userId, id }) => (
+          {allPosts.map(({ id, title, body, userId }) => (
             <PostCard key={id} title={title} body={body} userId={userId} id={id} />
           ))}
         </div>
       </main>
 
       {isModalOpen && (
-        <PostModal onClose={() => setModalOpen(false)} onSubmit={handleAddPost} />
+        <PostModal
+          onClose={() => setModalOpen(false)}
+          onSubmit={handleAddPost}
+        />
       )}
     </div>
   );
 };
 
 export async function getStaticProps() {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const posts = await response.json();
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const posts = await res.json();
 
   return {
     props: {
