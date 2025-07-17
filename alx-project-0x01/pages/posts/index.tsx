@@ -10,28 +10,28 @@ interface PostsPageProps {
 
 const Posts: React.FC<PostsPageProps> = ({ posts }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [newPosts, setNewPosts] = useState<PostProps[]>([]); // ✅ store added posts
+  const [newPosts, setNewPosts] = useState<PostProps[]>([]);
 
-  const handleAddPost = (post: PostData) => {
-    const newPostWithId = { ...post, id: posts.length + newPosts.length + 1 };
-    setNewPosts((prev) => [newPostWithId, ...prev]); // ✅ add to array
+  const handleAddPost = (newPost: PostData) => {
+    const postWithId: PostProps = { ...newPost, id: posts.length + newPosts.length + 1 };
+    setNewPosts([postWithId, ...newPosts]);
   };
 
   return (
     <div className="flex flex-col h-screen">
       <Header />
       <main className="p-4">
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Post Content</h1>
           <button
             onClick={() => setModalOpen(true)}
-            className="bg-blue-700 px-4 py-2 rounded-full text-white"
+            className="bg-blue-700 px-4 py-2 rounded-full text-white hover:bg-blue-800 transition"
           >
             Add Post
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[...newPosts, ...posts].map(({ title, body, userId, id }) => (
             <PostCard key={id} title={title} body={body} userId={userId} id={id} />
           ))}
@@ -51,8 +51,8 @@ export async function getStaticProps() {
 
   return {
     props: {
-      posts
-    }
+      posts,
+    },
   };
 }
 
