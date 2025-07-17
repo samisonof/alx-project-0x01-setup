@@ -6,7 +6,7 @@ type UsersPageProps = {
   posts: UserProps[];
 };
 
-const Users: React.FC<UsersPageProps> = ({ posts }) => {
+const Users = ({ posts }: UsersPageProps) => {
   return (
     <div className="flex flex-col h-screen">
       <Header />
@@ -16,8 +16,8 @@ const Users: React.FC<UsersPageProps> = ({ posts }) => {
           <button className="bg-purple-700 px-4 py-2 rounded-full text-white">Add User</button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {posts?.map((user, index) => (
-            <UserCard key={index} {...user} />
+          {posts.map((user) => (
+            <UserCard key={user.id} {...user} />
           ))}
         </div>
       </main>
