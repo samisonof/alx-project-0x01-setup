@@ -6,27 +6,33 @@ export interface PostProps {
 }
 
 export interface UserProps {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
+    id:       number;
+    name:     string;
+    username: string;
+    email:    string;
+    address:  Address;
+    phone:    string;
+    website:  string;
+    company:  Company;
+}
+
+export interface Address {
+    street:  string;
+    suite:   string;
+    city:    string;
     zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
+    geo:     Geo;
+}
+
+export interface Geo {
+    lat: string;
+    lng: string;
+}
+
+export interface Company {
+    name:        string;
     catchPhrase: string;
-    bs: string;
-  };
+    bs:          string;
 }
 
 export interface PostData {
@@ -41,19 +47,11 @@ export interface PostModalProps {
   onSubmit: (post: PostData) => void;
 }
 
-export interface PostProps {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
-
 export interface UserData {
+  id?: number; // 'id' is optional for new users
   name: string;
   username: string;
   email: string;
-  phone: string;
-  website: string;
   address: {
     street: string;
     suite: string;
@@ -64,34 +62,8 @@ export interface UserData {
       lng: string;
     };
   };
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-export interface UserModalProps {
-  onClose: () => void;
-  onSubmit: (user: UserData) => void;
-}
-export interface UserData {
-  id?: number;
-  name: string;
-  username: string;
-  email: string;
   phone: string;
   website: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
   company: {
     name: string;
     catchPhrase: string;
@@ -101,6 +73,5 @@ export interface UserData {
 
 export interface UserModalProps {
   onClose: () => void;
-  onSubmit: (user: UserData) => void;
+  onSubmit: (post: UserProps) => void;
 }
-
