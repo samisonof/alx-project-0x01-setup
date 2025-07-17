@@ -75,8 +75,6 @@ export interface UserModalProps {
   onClose: () => void;
   onSubmit: (user: UserData) => void;
 }
-// interfaces/index.ts
-
 export interface UserData {
   id?: number;
   name: string;
@@ -105,3 +103,4 @@ export interface UserModalProps {
   onClose: () => void;
   onSubmit: (user: UserData) => void;
 }
+

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { UserData, UserModalProps } from "@/interfaces";
 
 const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
-  const [formData, setFormData] = useState<UserData>({
+  const [user, setUser] = useState<UserData>({
     name: "",
     username: "",
     email: "",
@@ -25,62 +25,180 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
     },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
 
-    if (name.includes("address.")) {
-      const key = name.split(".")[1];
-      setFormData({
-        ...formData,
+    if (name.startsWith("address.")) {
+      const field = name.split(".")[1];
+      setUser(prev => ({
+        ...prev,
         address: {
-          ...formData.address,
-          [key]: value,
+          ...prev.address,
+          [field]: value,
+          geo: { ...prev.address.geo },
         },
-      });
-    } else if (name.includes("company.")) {
-      const key = name.split(".")[1];
-      setFormData({
-        ...formData,
-        company: {
-          ...formData.company,
-          [key]: value,
+      }));
+    } else if (name.startsWith("geo.")) {
+      const field = name.split(".")[1];
+      setUser(prev => ({
+        ...prev,
+        address: {
+          ...prev.address,
+          geo: { ...prev.address.geo, [field]: value },
         },
-      });
+      }));
+    } else if (name.startsWith("company.")) {
+      const field = name.split(".")[1];
+      setUser(prev => ({
+        ...prev,
+        company: { ...prev.company, [field]: value },
+      }));
     } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+      setUser(prev => ({ ...prev, [name]: value }));
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit(user);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl relative">
-        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600">
-          ✕
-        </button>
-        <h2 className="text-xl font-semibold mb-4">Add User</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-lg">
+        <h2 className="text-2xl font-bold mb-4">Add New User</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-          <input name="name" placeholder="Name" value={formData.name} onChange={handleChange} className="border p-2 rounded" required />
-          <input name="username" placeholder="Username" value={formData.username} onChange={handleChange} className="border p-2 rounded" required />
-          <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="border p-2 rounded" required />
-          <input name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} className="border p-2 rounded" required />
-          <input name="website" placeholder="Website" value={formData.website} onChange={handleChange} className="border p-2 rounded" required />
-          <input name="address.street" placeholder="Street" onChange={handleChange} className="border p-2 rounded" />
-          <input name="address.city" placeholder="City" onChange={handleChange} className="border p-2 rounded" />
-          <input name="address.suite" placeholder="Suite" onChange={handleChange} className="border p-2 rounded" />
-          <input name="address.zipcode" placeholder="Zipcode" onChange={handleChange} className="border p-2 rounded" />
-          <input name="company.name" placeholder="Company Name" onChange={handleChange} className="border p-2 rounded" />
-          <input name="company.catchPhrase" placeholder="Catchphrase" onChange={handleChange} className="border p-2 rounded" />
-          <input name="company.bs" placeholder="BS" onChange={handleChange} className="border p-2 rounded" />
-          <button type="submit" className="col-span-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Submit</button>
+          {/* Basic Info */}
+          <input
+            name="name"
+            placeholder="Name"
+            value={user.name}
+            onChange={handleChange}
+            className="border p-2 rounded"
+            required
+          />
+          <input
+            name="username"
+            placeholder="Username"
+            value={user.username}
+            onChange={handleChange}
+            className="border p-2 rounded"
+            required
+          />
+          <input
+            name="email"
+            placeholder="Email"
+            type="email"
+            value={user.email}
+            onChange={handleChange}
+            className="border p-2 rounded"
+            required
+          />
+          <input
+            name="phone"
+            placeholder="Phone"
+            value={user.phone}
+            onChange={handleChange}
+            className="border p-2 rounded"
+            required
+          />
+          <input
+            name="website"
+            placeholder="Website"
+            value={user.website}
+            onChange={handleChange}
+            className="border p-2 rounded"
+            required
+          />
+
+          {/* Address */}
+          <input
+            name="address.street"
+            placeholder="Street"
+            value={user.address.street}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            name="address.suite"
+            placeholder="Suite"
+            value={user.address.suite}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            name="address.city"
+            placeholder="City"
+            value={user.address.city}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            name="address.zipcode"
+            placeholder="Zipcode"
+            value={user.address.zipcode}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+
+          {/* Geo */}
+          <input
+            name="geo.lat"
+            placeholder="Latitude"
+            value={user.address.geo.lat}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            name="geo.lng"
+            placeholder="Longitude"
+            value={user.address.geo.lng}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+
+          {/* Company */}
+          <input
+            name="company.name"
+            placeholder="Company Name"
+            value={user.company.name}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            name="company.catchPhrase"
+            placeholder="Catch Phrase"
+            value={user.company.catchPhrase}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            name="company.bs"
+            placeholder="BS"
+            value={user.company.bs}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+
+          {/* Buttons */}
+          <div className="col-span-2 flex justify-end gap-4 mt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 border rounded hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Add User
+            </button>
+          </div>
         </form>
       </div>
     </div>
