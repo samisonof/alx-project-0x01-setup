@@ -1,5 +1,4 @@
 # alx-project-0x01-setup
-# alx-project-0x01-setup
 
 This project is part of the ALX Frontend Specialization and demonstrates creating a simplified social platform using **Next.js**, **TypeScript**, and **TailwindCSS**.
 
@@ -37,10 +36,6 @@ This project is part of the ALX Frontend Specialization and demonstrates creatin
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-
-## 📷 Screenshots
-
-> You can add screenshots here by uploading them to `public/assets/images/` and referencing them with `![Alt Text](./public/assets/images/screenshot.png)`
 
 ## 💻 Running Locally
 
